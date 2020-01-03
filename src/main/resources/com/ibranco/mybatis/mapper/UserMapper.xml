@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ibranco.mybatis.mapper.UserMapper">
+
+    <sql id="find">
+        select * from user
+    </sql>
+    <select id="findAll" resultType="user">
+        <include refid="find"/>
+    </select>
+    <select id="findByContent" resultType="user">
+        <include refid="find"/> where 1=1
+        <if test="username !=null">
+            and username=#{username}
+        </if>
+        <if test="name !=null">
+            and name=#{name}
+        </if>
+    </select>
+    <select id="findByContent1" resultType="user">
+        <include refid="find"/>
+        <where>
+            <if test="username != null">
+                and username=#{username}
+            </if>
+            <if test="name != null">
+                and name=#{name}
+            </if>
+        </where>
+    </select>
+    <select id="findByContent2" resultType="user" parameterType="queryVo">
+        <include refid="find"/>
+        <where>
+            <if test="user.username != null">
+                and username=#{user.username}
+            </if>
+            <if test="user.name != null">
+                and name=#{user.name}
+            </if>
+        </where>
+    </select>
+    <select id="findByAnyId" resultType="user" parameterType="queryVo">
+        <include refid="find"/>
+        <where>
+            <if test="ids != null and ids.size()>0">
+                <foreach collection="ids" open="id in (" close=")" separator="," item="ddd">
+                    #{ddd}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>
